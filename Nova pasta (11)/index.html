@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YouTube</title>
+<meta name="description" content="Canal do YouTube de Miguel Fracassi: vida real e os jogos que ele quiser jogar.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFF8EF;
+    --bg-card:#FFFFFF;
+    --ink:#211A15;
+    --ink-soft:#6B5F55;
+    --yt:#FF0000;
+    --yt-deep:#C40000;
+    --yt-pale:#FFE0E0;
+    --green:#8FCB5E;
+    --pink:#FF8FB2;
+    --blurple:#5865F2;
+    --whats:#25D366;
+    --line:rgba(33,26,21,0.12);
+    --display:'Baloo 2', sans-serif;
+    --body:'Nunito', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--body);
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 24px;}
+  .blob{ position:absolute; border-radius:50%; z-index:0; }
+
+  header.nav{
+    position:sticky; top:0; z-index:60;
+    background:rgba(255,248,239,0.9);
+    backdrop-filter:blur(10px);
+    border-bottom:2px solid var(--line);
+  }
+  .nav-inner{
+    max-width:1000px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 24px;
+  }
+  .brand{ font-family:var(--display); font-weight:800; font-size:20px; display:flex; align-items:center; gap:8px; }
+  .brand .dot{ color:var(--yt); }
+  .back-link{
+    font-family:var(--display); font-weight:700; font-size:13px;
+    background:var(--bg-card); border:2px solid var(--ink); border-radius:100px;
+    padding:8px 16px;
+  }
+
+  .btn{
+    font-family:var(--display); font-weight:700; font-size:15px;
+    padding:13px 24px; border-radius:100px;
+    display:inline-flex; align-items:center; gap:8px;
+    border:2.5px solid var(--ink);
+    box-shadow:4px 4px 0 var(--ink);
+    transition:transform .15s ease, box-shadow .15s ease;
+    white-space:nowrap;
+    cursor:pointer;
+    font-family:var(--display);
+  }
+  .btn:hover{ transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--ink); }
+  .btn:active{ transform:translate(0,0); box-shadow:1px 1px 0 var(--ink); }
+  .btn-yt{ background:var(--yt); color:#fff; }
+  .btn-outline{ background:var(--bg-card); color:var(--ink); }
+
+  /* hero */
+  .hero{ position:relative; padding:80px 0 50px; }
+  .hero .blob-a{ width:360px; height:360px; background:var(--yt-pale); opacity:.9; top:-110px; right:-120px; }
+  .hero .blob-b{ width:220px; height:220px; background:var(--green); opacity:.25; bottom:-40px; left:-90px; }
+
+  .hero-inner{ position:relative; z-index:1; display:flex; align-items:center; gap:40px; flex-wrap:wrap; }
+  .hero-visual{ position:relative; width:220px; height:220px; flex-shrink:0; }
+  .play-badge{
+    width:180px; height:180px; border-radius:44px;
+    border:4px solid var(--ink); overflow:hidden;
+    box-shadow:8px 8px 0 var(--ink);
+    transform:rotate(-4deg);
+    background:var(--yt);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .play-badge svg{ width:70px; height:70px; }
+  .mascote-sticker{
+    position:absolute; width:110px; height:110px;
+    bottom:-24px; right:-26px;
+    border-radius:24px; border:4px solid var(--ink);
+    background:#fff; overflow:hidden;
+    box-shadow:5px 5px 0 var(--ink);
+    transform:rotate(9deg);
+  }
+  .mascote-sticker img{ width:100%; height:100%; object-fit:cover; }
+
+  .kicker{
+    font-family:var(--display); font-weight:700; font-size:13px;
+    text-transform:uppercase; letter-spacing:0.04em; color:var(--yt-deep);
+    margin-bottom:10px;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .kicker::before{ content:'▶'; }
+  h1{ font-family:var(--display); font-weight:800; font-size:clamp(32px,5.2vw,54px); line-height:1.05; max-width:520px; }
+  h1 .handle{ color:var(--yt); }
+  .hero-sub{ margin-top:16px; font-size:16.5px; color:var(--ink-soft); font-weight:600; max-width:440px; }
+  .hero-actions{ margin-top:26px; display:flex; gap:14px; flex-wrap:wrap; }
+
+  @media (max-width:760px){
+    .hero-inner{ flex-direction:column; align-items:flex-start; }
+    .hero-visual{ margin-bottom:10px; }
+  }
+
+  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce){ .reveal{opacity:1;transform:none;transition:none;} html{scroll-behavior:auto;} }
+
+  section{ padding:70px 0; }
+  h2.title{ font-family:var(--display); font-weight:800; font-size:clamp(26px,3.8vw,38px); margin-bottom:16px; max-width:560px; }
+  p.lead{ font-size:15.5px; color:var(--ink-soft); font-weight:600; max-width:600px; }
+
+  /* flip cards - "o que rola por lá" */
+  .flip-grid{ display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:36px; }
+  @media (max-width:700px){ .flip-grid{ grid-template-columns:1fr; } }
+  .flip-card{
+    perspective:1200px;
+    height:220px;
+  }
+  .flip-inner{
+    position:relative; width:100%; height:100%;
+    transition:transform .6s;
+    transform-style:preserve-3d;
+  }
+  .flip-card:hover .flip-inner, .flip-card:focus-within .flip-inner{ transform:rotateY(180deg); }
+  .flip-front, .flip-back{
+    position:absolute; inset:0;
+    -webkit-backface-visibility:hidden; backface-visibility:hidden;
+    border-radius:20px; border:3px solid var(--ink);
+    box-shadow:5px 5px 0 var(--ink);
+    padding:26px;
+    display:flex; flex-direction:column; justify-content:center;
+  }
+  .flip-front{ background:var(--bg-card); }
+  .flip-back{ background:var(--yt); color:#fff; transform:rotateY(180deg); }
+  .flip-card h3{ font-family:var(--display); font-size:21px; margin-bottom:8px; }
+  .flip-card p{ font-size:14.5px; font-weight:600; }
+  .flip-hint{ font-family:var(--display); font-size:11px; margin-top:14px; opacity:0.7; }
+
+  /* roleta interativa */
+  .roleta-card{
+    margin-top:20px;
+    background:var(--bg-card);
+    border:3px solid var(--ink);
+    border-radius:24px;
+    padding:34px;
+    text-align:center;
+  }
+  .roleta-emoji{
+    font-size:64px;
+    display:inline-block;
+    transition:transform .5s cubic-bezier(.2,.8,.3,1.4);
+  }
+  .roleta-emoji.spin{ transform:rotate(1080deg); }
+  .roleta-result{
+    font-family:var(--display); font-weight:700; font-size:19px;
+    margin-top:18px; min-height:28px;
+    color:var(--yt-deep);
+  }
+  .roleta-btn{ margin-top:20px; }
+
+  .subscribe-band{
+    background:var(--yt);
+    border-top:3px solid var(--ink);
+    border-bottom:3px solid var(--ink);
+    color:#fff;
+  }
+  .subscribe-inner{ display:flex; align-items:center; justify-content:space-between; gap:26px; flex-wrap:wrap; }
+  .subscribe-inner h2{ color:#fff; }
+  .subscribe-inner .kicker{ color:#FFD5D5; }
+  .subscribe-inner p.lead{ color:#FFE6E6; }
+
+  footer{ padding:36px 0; text-align:center; font-family:var(--display); font-weight:600; font-size:12px; color:var(--ink-soft); }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <div class="brand">migg<span class="dot">.</span></div>
+    <a class="back-link" href="index.html">← voltar ao site</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="blob blob-a"></div>
+  <div class="blob blob-b"></div>
+  <div class="wrap hero-inner">
+    <div class="hero-visual reveal in">
+      <div class="play-badge">
+        <svg viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <div class="mascote-sticker"><img src="feliz.png" alt="Mascote sorrindo"></div>
+    </div>
+    <div class="reveal in">
+      <div class="kicker">meu canal no youtube</div>
+      <h1>Sou o <span class="handle">Miguel Fracassi</span> lá no YouTube</h1>
+      <p class="hero-sub">Posto da minha vida e jogo o que eu quiser — sem roteiro fixo, sem tema fixo, só o que der vontade.</p>
+      <div class="hero-actions">
+        <a class="btn btn-yt" href="https://www.youtube.com/@mihnwg" target="_blank" rel="noopener">assistir no youtube →</a>
+        <a class="btn btn-outline" href="index.html">voltar ao site</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="o-que-rola">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">o que rola por lá</div>
+      <h2 class="title">Passa o mouse (ou toca) pra descobrir</h2>
+      <p class="lead">Dois lados do canal — vida real e jogatina, sem hora marcada pra nenhum dos dois.</p>
+    </div>
+    <div class="flip-grid">
+      <div class="flip-card reveal" tabindex="0">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <h3>Vida real</h3>
+            <p>Um pouco do dia a dia, bastidores e o que estiver acontecendo comigo.</p>
+            <span class="flip-hint">passa o mouse →</span>
+          </div>
+          <div class="flip-back">
+            <h3>Sem roteiro</h3>
+            <p>Não é vídeo editado igual a todo mundo — é a vida rolando mesmo, do jeito que dá.</p>
+          </div>
+        </div>
+      </div>
+      <div class="flip-card reveal" tabindex="0">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <h3>Jogo o que eu quiser</h3>
+            <p>Sem gênero fixo — hoje pode ser um jogo novo, amanhã pode ser aquele clássico de novo.</p>
+            <span class="flip-hint">passa o mouse →</span>
+          </div>
+          <div class="flip-back">
+            <h3>Sem pressão</h3>
+            <p>Jogo o que bate vontade no momento, junto de quem tiver assistindo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="roleta">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="kicker">roleta do próximo vídeo</div>
+      <h2 class="title">Não sabe o que vou postar? Eu também não. Gira aí </h2>
+      <p class="lead">Clica no botão e descobre uma ideia aleatória do que pode rolar no próximo vídeo.</p>
+    </div>
+    <div class="roleta-card reveal">
+      <span class="roleta-emoji" id="roleta-emoji"></span>
+      <div class="roleta-result" id="roleta-result">clica pra girar!</div>
+      <button class="btn btn-yt roleta-btn" id="roleta-btn">girar a roleta →</button>
+    </div>
+  </div>
+</section>
+
+<section class="subscribe-band">
+  <div class="wrap subscribe-inner">
+    <div class="reveal">
+      <div class="kicker">bora se inscrever?</div>
+      <h2 class="title">@mihnwg no YouTube</h2>
+      <p class="lead">É só clicar, assistir e se inscrever pra não perder o próximo vídeo — seja lá qual for.</p>
+      <div style="margin-top:22px;">
+        <a class="btn btn-outline" href="https://www.youtube.com/@mihnwg" target="_blank" rel="noopener">ir pro canal →</a>
+      </div>
+    </div>
+    <div class="mascote-sticker reveal" style="position:static; transform:rotate(-6deg); width:110px; height:110px;">
+      <img src="azul.png" alt="Mascote azul de boné e óculos">
+    </div>
+  </div>
+</section>
+
+<footer>
+  Esse site é um subdominio <a href="https://gueldev.site">gueldev.site</a>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  }, {threshold:0.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  const opcoes = [
+    { emoji:'', texto:'um jogo novo que acabou de sair' },
+    { emoji:'', texto:'um jogo de terror pra tomar susto' },
+    { emoji:'', texto:'um vlog aleatório do dia a dia' },
+    { emoji:'', texto:'tentando zerar um jogo clássico' },
+    { emoji:'', texto:'reagindo aos comentários de vocês' },
+    { emoji:'', texto:'literalmente o que der na telha' },
+    { emoji:'', texto:'aquele jogo que a galera pedir nos comentários' }
+  ];
+
+  const emojiEl = document.getElementById('roleta-emoji');
+  const resultEl = document.getElementById('roleta-result');
+  const btn = document.getElementById('roleta-btn');
+
+  btn.addEventListener('click', () => {
+    emojiEl.classList.remove('spin');
+    void emojiEl.offsetWidth; // reinicia a animação
+    emojiEl.classList.add('spin');
+
+    resultEl.textContent = 'girando...';
+
+    setTimeout(() => {
+      const escolha = opcoes[Math.floor(Math.random() * opcoes.length)];
+      emojiEl.textContent = escolha.emoji;
+      resultEl.textContent = 'quem sabe: ' + escolha.texto;
+    }, 500);
+  });
+</script>
+
+</body>
+</html>
